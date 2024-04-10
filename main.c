@@ -48,7 +48,7 @@ typedef struct {
   char payType;
 } CoD;
 
-typedef struct {
+/*typedef struct {
   union {
     int id;
     char businessName[50];
@@ -57,23 +57,38 @@ typedef struct {
   char fuelAmt;
   char lubeReq;
   char payType;
+} Charge;*/
+
+typedef struct
+{
+    int idNo;
+    char name[40];
+    int repNum;
+    char licenseNo[6];
+    FuelType fuel;
+    float fuelAmt;
+    char lubeRequest;
+    float depositAmt;
 } Charge;
 
-// Function prototypes
+Charge customers[50];
 
+//Function prototypes
 void mainMenu();
 void serveCustomer();
-void generateReceipt();
+void codServe();
+void chargeServe();
+void addCharge(Charge *);
 void blankCharge();
-void addCharge();
 void existingCharge();
-bool enterPassword(); // Returns true if password is valid
-void updateCharge();
 void deleteCharge();
-void chargeSearch();
-void chargePayment();
+int randomInteger(int, int);
+char randomCharacter(int);
+void paytoCharge();
 void refuelTank();
 void generateReport();
+void exitProgram();
+bool enterPassword(); // Returns true if password is valid
 
 int main() {
   enterPassword();
@@ -106,4 +121,21 @@ bool enterPassword() {
     printf("Invalid Password Entered\n");
     return false;
   }
+}
+
+int randomInteger(int upper, int lower)
+{
+    int randomNum;
+
+    srand(time(0));
+    randomNum = rand() % ((upper - lower + 1) + lower);
+
+    return randomNum;
+}
+
+char randomCharacter(int index)
+{
+    char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    return charset[index];
 }
