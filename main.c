@@ -1,9 +1,9 @@
+#include <conio.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#include <conio.h>
 
 #define E87CAP 75708.23
 #define E90CAP 113562.35
@@ -18,20 +18,9 @@
 #define L15W40PRICE 3600
 #define LSAR40PRICE 2100
 
-typedef enum
-{
-    E10_87 = 1,
-    E10_90,
-    DIESEL
-} FuelType;
+typedef enum { E10_87 = 1, E10_90, DIESEL } FuelType;
 
-typedef enum
-{
-    L5W30 = 1,
-    L5W40,
-    L15W40,
-    LSAE40
-} LubeType;
+typedef enum { L5W30 = 1, L5W40, L15W40, LSAE40 } LubeType;
 // Data structures
 
 #define Correct_Password "123456"
@@ -59,21 +48,20 @@ typedef struct {
   char payType;
 } Charge;*/
 
-typedef struct
-{
-    int idNo;
-    char name[40];
-    int repNum;
-    char licenseNo[6];
-    FuelType fuel;
-    float fuelAmt;
-    char lubeRequest;
-    float depositAmt;
+typedef struct {
+  int idNo;
+  char name[40];
+  int repNum;
+  char licenseNo[6];
+  FuelType fuel;
+  float fuelAmt;
+  char lubeRequest;
+  float depositAmt;
 } Charge;
 
 Charge customers[50];
 
-//Function prototypes
+// Function prototypes
 void mainMenu();
 void serveCustomer();
 void codServe();
@@ -107,8 +95,18 @@ bool enterPassword() {
   // User enters the password
   do {
     c = getch(); // Record each charcter
-    if (c == 13)
+    if (c == 13 || c == 3)
       break;
+
+    if (c == 8) { // Allow backspace
+      if (strlen(password) == 0) {
+        continue;
+      }
+      printf("\b \b");
+      password[strlen(password) - 1] = '\0';
+      continue;
+    }
+
     sprintf(password, "%s%c", password, c);
     printf("*"); // Print a mask instead of the character
   } while (c != EOF);
@@ -123,19 +121,17 @@ bool enterPassword() {
   }
 }
 
-int randomInteger(int upper, int lower)
-{
-    int randomNum;
+int randomInteger(int upper, int lower) {
+  int randomNum;
 
-    srand(time(0));
-    randomNum = rand() % ((upper - lower + 1) + lower);
+  srand(time(0));
+  randomNum = rand() % ((upper - lower + 1) + lower);
 
-    return randomNum;
+  return randomNum;
 }
 
-char randomCharacter(int index)
-{
-    char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+char randomCharacter(int index) {
+  char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    return charset[index];
+  return charset[index];
 }
