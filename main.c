@@ -173,6 +173,15 @@ void mainMenu() {
 
   return;
 }
+void serveCustomer() {}
+void generateReceipt() {}
+void codServe() {}
+void chargeServe() {}
+void addCharge() {}
+void blankCharge() {}
+void existingCharge() {}
+void deleteCharge() {}
+
 int randomInteger(int upper, int lower) {
   int randomNum;
 
@@ -187,3 +196,10 @@ char randomCharacter(int index) {
 
   return charset[index];
 }
+void paytoCharge() {}
+void updateCharge() {}
+void refuelTank() {}
+void chargeSearch() {}
+void chargePayment() {}
+void generateReport() {}
+void exitProgram() {}
