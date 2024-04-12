@@ -1,9 +1,9 @@
+#include <conio.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#include <conio.h>
 
 #define E87CAP 75708.23
 #define E90CAP 113562.35
@@ -18,20 +18,9 @@
 #define L15W40PRICE 3600
 #define LSAR40PRICE 2100
 
-typedef enum
-{
-    E10_87 = 1,
-    E10_90,
-    DIESEL
-} FuelType;
+typedef enum { E10_87 = 1, E10_90, DIESEL } FuelType;
 
-typedef enum
-{
-    L5W30 = 1,
-    L5W40,
-    L15W40,
-    LSAE40
-} LubeType;
+typedef enum { L5W30 = 1, L5W40, L15W40, LSAE40 } LubeType;
 // Data structures
 
 #define Correct_Password "123456"
@@ -59,21 +48,20 @@ typedef struct {
   char payType;
 } Charge;*/
 
-typedef struct
-{
-    int idNo;
-    char name[40];
-    int repNum;
-    char licenseNo[6];
-    FuelType fuel;
-    float fuelAmt;
-    char lubeRequest;
-    float depositAmt;
+typedef struct {
+  int idNo;
+  char name[40];
+  int repNum;
+  char licenseNo[6];
+  FuelType fuel;
+  float fuelAmt;
+  char lubeRequest;
+  float depositAmt;
 } Charge;
 
 Charge customers[50];
 
-//Function prototypes
+// Function prototypes
 void mainMenu();
 void serveCustomer();
 void generateReceipt();
@@ -128,77 +116,74 @@ bool enterPassword() {
 }
 
 void mainMenu() {
-    // Declare variables for menu use
-    int choice;
-   
+  // Declare variables for menu use
+  int choice;
 
-    // Main menu loop
-    do {
-        // Display menu options
-        printf("\nMain Menu\n");
-        printf("1. Serve Customer\n");
-        printf("2. Add Charge Customer\n");
-        printf("3. Update Charge Customer\n");
-        printf("4. Delete Charge Customer\n");
-        printf("5. Make Payment to Charge Account\n");
-        printf("6. Refuel Tank\n");
-        printf("7. Generate Report\n");
-        printf("8. Search for existing Charge Customer \n");
+  // Main menu loop
+  do {
+    // Display menu options
+    printf("\nMain Menu\n");
+    printf("1. Serve Customer\n");
+    printf("2. Add Charge Customer\n");
+    printf("3. Update Charge Customer\n");
+    printf("4. Delete Charge Customer\n");
+    printf("5. Make Payment to Charge Account\n");
+    printf("6. Refuel Tank\n");
+    printf("7. Generate Report\n");
+    printf("8. Search for existing Charge Customer \n");
 
-        printf("9. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
+    printf("9. Exit\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
 
-        // Execute corresponding function based on user choice
-        switch (choice) {
-            case 1:
-                serveCustomer();
-                break;
-            case 2:
-                addCharge();
-                break;
-            case 3:
-                updateCharge();
-                break;
-            case 4:
-                deleteCharge();
-                break;
-            case 5:
-                chargePayment();
-                break;
-            case 6:
-                refuelTank();
-                break;
-            case 7:
-                generateReport();
-                break;
-            case 8:
-                chargeSearch();
-                break;
-            case 9:
-                return 0;
-                break;
-            
-            default:
-                printf("Invalid choice. Please try again.\n");
-        }
-    } while (choice != 9);
+    // Execute corresponding function based on user choice
+    switch (choice) {
+    case 1:
+      serveCustomer();
+      break;
+    case 2:
+      addCharge();
+      break;
+    case 3:
+      updateCharge();
+      break;
+    case 4:
+      deleteCharge();
+      break;
+    case 5:
+      chargePayment();
+      break;
+    case 6:
+      refuelTank();
+      break;
+    case 7:
+      generateReport();
+      break;
+    case 8:
+      chargeSearch();
+      break;
+    case 9:
+      return;
+      break;
 
-    return 0;
+    default:
+      printf("Invalid choice. Please try again.\n");
+    }
+  } while (choice != 9);
+
+  return;
 }
-int randomInteger(int upper, int lower)
-{
-    int randomNum;
+int randomInteger(int upper, int lower) {
+  int randomNum;
 
-    srand(time(0));
-    randomNum = rand() % ((upper - lower + 1) + lower);
+  srand(time(0));
+  randomNum = rand() % ((upper - lower + 1) + lower);
 
-    return randomNum;
+  return randomNum;
 }
 
-char randomCharacter(int index)
-{
-    char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+char randomCharacter(int index) {
+  char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    return charset[index];
+  return charset[index];
 }
