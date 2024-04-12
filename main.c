@@ -34,7 +34,7 @@ typedef struct {
   FuelType FuelType;
   float fuelAmt;
   char lubeReq;
-  char payType;
+  enum { Cash = 1, Card = 2 } payType;
 } CoD;
 
 /*typedef struct {
@@ -173,7 +173,33 @@ void mainMenu() {
 
   return;
 }
-void serveCustomer() {}
+void serveCustomer() {
+  Charge *charge;
+  CoD *cod;
+
+  char fuelType[10];
+
+  enum { CoD = 1, Charge = 2 } choice;
+  printf("Select type of Customer\n\t 1- Cash on Delivery (CoD) \n\t 2 - "
+         "Charge Customer");
+  printf("Enter choice:");
+  scanf("%d", &choice);
+
+  if (choice == CoD) {
+    printf("Enter Fuel Type:");
+    scanf("%s", fuelType);
+
+    printf("Enter Fuel Amount:");
+    scanf("%f", &cod->fuelAmt);
+
+    cod->lubeReq = randomInteger(0, 1) ? 'Y' : 'N';
+
+    printf("Select Payment Type\n\t 1. Cash \n\t 2. Card\n");
+    printf("Enter Choice:");
+
+  } else if (choice == Charge) {
+  }
+}
 void generateReceipt() {}
 void codServe() {}
 void chargeServe() {}
