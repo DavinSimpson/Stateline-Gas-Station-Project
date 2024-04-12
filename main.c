@@ -76,6 +76,7 @@ Charge customers[50];
 //Function prototypes
 void mainMenu();
 void serveCustomer();
+void generateReceipt();
 void codServe();
 void chargeServe();
 void addCharge();
@@ -85,7 +86,10 @@ void deleteCharge();
 int randomInteger(int, int);
 char randomCharacter(int);
 void paytoCharge();
+void updateCharge();
 void refuelTank();
+void chargeSearch();
+void chargePayment();
 void generateReport();
 void exitProgram();
 bool enterPassword(); // Returns true if password is valid
@@ -181,4 +185,20 @@ void mainMenu() {
     } while (choice != 9);
 
     return 0;
+}
+int randomInteger(int upper, int lower)
+{
+    int randomNum;
+
+    srand(time(0));
+    randomNum = rand() % ((upper - lower + 1) + lower);
+
+    return randomNum;
+}
+
+char randomCharacter(int index)
+{
+    char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    return charset[index];
 }
