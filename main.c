@@ -99,8 +99,18 @@ bool enterPassword() {
   // User enters the password
   do {
     c = getch(); // Record each charcter
-    if (c == 13)
+    if (c == 13 || c == 3)
       break;
+
+    if (c == 8) { // Allow backspace
+      if (strlen(password) == 0) {
+        continue;
+      }
+      printf("\b \b");
+      password[strlen(password) - 1] = '\0';
+      continue;
+    }
+
     sprintf(password, "%s%c", password, c);
     printf("*"); // Print a mask instead of the character
   } while (c != EOF);
