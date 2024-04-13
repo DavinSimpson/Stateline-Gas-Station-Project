@@ -1,3 +1,15 @@
+/*
+Author Names:
+Ryan Cole - 2106111
+Wolde Kristos - 2304844
+Sheriann Sewell - 2210110
+Davin Simpson - 2301564
+
+Tutor Name: Michelle March
+
+Occurrence: UN2
+
+*/
 #include <conio.h>
 #include <ctype.h>
 #include <stdbool.h>
@@ -28,6 +40,7 @@ typedef enum { L5W30 = 1, L5W40, L15W40, LSAE40 } LubeType;
 
 // Command line options for clearing screen: Windows/Mac
 #define clear system("cls || clear")
+#define pause system("pause || sleep 5");
 
 typedef struct {
   FuelType fuelType;
@@ -67,6 +80,7 @@ Charge customers[50];
 
 // Function prototypes
 void mainMenu();
+void welcomeScreen();
 void serveCustomer();
 void generateReceipt();
 void codServe();
@@ -88,9 +102,23 @@ bool enterPassword(); // Returns true if password is valid
 char *getLicensePlateInfo();
 
 int main() {
-  enterPassword();
-  serveCustomer();
+  welcomeScreen();
+  mainMenu();
   return 0;
+}
+
+void welcomeScreen() {
+  printf("Welcome to Stateline Gas Station Program\n"
+         "This program was created by:\n"
+         "\tRyan Cole (2106111)\n"
+         "\tWolde Kristos (2304844)\n"
+         "\tSheriann Sewell (2210110)\n"
+         "\tDavin Simpson (2301564) \n"
+         "\nOcc : UN2\n"
+         "Tutor: Michelle March\n"
+         "\nAdmin Password is:123456\n");
+  pause;
+  clear;
 }
 
 bool enterPassword() {
