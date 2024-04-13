@@ -280,3 +280,67 @@ FUNCTION randomCharacter(index)
 END FUNCTION
 
 // Define other functions (generateReceipt, codServe, chargeServe, addCharge, blankCharge, existingCharge, deleteCharge, paytoCharge, updateCharge, refuelTank, chargeSearch, chargePayment, generateReport, exitProgram)
+
+// Define function to generate receipt
+FUNCTION generateReceipt(customer)
+    // Retrieve customer information
+    DECLARE name
+    IF customer.type == CoDCustomer THEN
+        name = "Cash on Delivery Customer"
+    ELSE IF customer.type == ChargeCustomer THEN
+        name = customer.name
+    END IF
+
+    // Generate receipt content
+    DECLARE receiptContent
+    receiptContent = "Receipt Details:\n"
+    receiptContent = receiptContent + "Customer Name: " + name + "\n"
+    PRINT receiptContent
+END FUNCTION
+
+// Define function for serving a Cash on Delivery (CoD) customer
+FUNCTION codServe(customer)
+    generateReceipt(customer)
+END FUNCTION
+
+// Define function for serving a Charge Customer
+FUNCTION chargeServe(customer)
+    // Perform the necessary actions to serve a Charge Customer
+    generateReceipt(customer)
+END FUNCTION
+
+// Define function to add a charge customer
+FUNCTION addCharge()   
+END FUNCTION
+
+// Define function to delete a charge customer
+FUNCTION deleteCharge()
+END FUNCTION
+
+// Define function to update charge customer information
+FUNCTION updateCharge()
+END FUNCTION
+
+// Define function to make a payment to a charge account
+FUNCTION chargePayment()
+END FUNCTION
+
+// Define function to refuel the tank
+FUNCTION refuelTank()
+END FUNCTION
+
+// Define function to search for an existing charge customer
+FUNCTION chargeSearch()
+END FUNCTION
+
+// Define function to generate a report
+FUNCTION generateReport()
+END FUNCTION
+
+// Define function to exit the program
+FUNCTION exitProgram()
+    // Perform any necessary cleanup or saving operations
+
+    // Terminates the program
+    EXIT
+END FUNCTION
