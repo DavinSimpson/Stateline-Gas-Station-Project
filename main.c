@@ -1,3 +1,15 @@
+/*
+Author Names:
+Ryan Cole - 2106111
+Wolde Kristos - 2304844
+Sheriann Sewell - 2210110
+Davin Simpson - 2301564
+
+Tutor Name: Michelle March
+
+Occurrence: UN2
+
+*/
 #include <conio.h>
 #include <ctype.h>
 #include <stdbool.h>
