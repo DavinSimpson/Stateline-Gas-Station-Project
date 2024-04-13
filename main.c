@@ -105,6 +105,7 @@ char *getLicensePlateInfo();
 
 int main() {
   welcomeScreen();
+  clear;
   mainMenu();
   return 0;
 }
@@ -116,6 +117,7 @@ void welcomeScreen() {
          "\tWolde Kristos (2304844)\n"
          "\tSheriann Sewell (2210110)\n"
          "\tDavin Simpson (2301564) \n"
+         "\tMatthew Webster - 2305616\n"
          "\nOcc : UN2\n"
          "Tutor: Michelle March\n"
          "\nAdmin Password is:123456\n");
@@ -328,40 +330,38 @@ void serveCustomer() {
   }
 }
 
-void printReceipt()
-{
-    printf("\nProcessing Successful.\n");
-    printf("RECEIPT\n");
-    printf("Transaction Date: %s\n", __DATE__);
-    printf("Type of Customer: Cash on Delivery (COD)\n");
-    printf("Items Purchased: \n");
-    printf("GCT Amount: \n");
-    printf("Total Amount: \n");
-    printf("Cash Given/Charge Amount: \n");
-    printf("Change: \n");
+void printReceipt() {
+  printf("\nProcessing Successful.\n");
+  printf("RECEIPT\n");
+  printf("Transaction Date: %s\n", __DATE__);
+  printf("Type of Customer: Cash on Delivery (COD)\n");
+  printf("Items Purchased: \n");
+  printf("GCT Amount: \n");
+  printf("Total Amount: \n");
+  printf("Cash Given/Charge Amount: \n");
+  printf("Change: \n");
 }
 
 void codServe() {}
 void chargeServe() {}
 void addCharge() {}
 
-Charge blankCharge()
-{
-    Charge ch;
+Charge blankCharge() {
+  Charge ch;
 
-    ch.idNo = 0;
-    strcpy(ch.name, " ");
-    //ch.fuelType = ' ';
-    ch.fuel = 0;
-    ch.fuelAmt = 0;
-    ch.lubeRequest = ' ';
-    ch.depositAmt = 0;
+  ch.idNo = 0;
+  strcpy(ch.name, " ");
+  // ch.fuelType = ' ';
+  ch.fuel = 0;
+  ch.fuelAmt = 0;
+  ch.lubeRequest = ' ';
+  ch.depositAmt = 0;
 
-    return ch;
+  return ch;
 }
 
 void existingCharge() {}
-void deleteCharge() {}
+void deleteCharge() { enterPassword(); }
 
 char *getLicensePlateInfo() {
   static char licNo[7];
@@ -405,8 +405,8 @@ char randomCharacter(int index) {
   return charset[index];
 }
 void paytoCharge() {}
-void updateCharge() {}
-void refuelTank() {}
+void updateCharge() { enterPassword(); }
+void refuelTank() { enterPassword(); }
 void chargeSearch() {}
 void chargePayment() {}
 void generateReport() {}
