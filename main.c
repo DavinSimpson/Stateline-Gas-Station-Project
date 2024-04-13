@@ -85,8 +85,9 @@ void serveCustomer();
 void generateReceipt();
 void codServe();
 void chargeServe();
+void printReceipt();
 void addCharge();
-void blankCharge();
+Charge blankCharge();
 void existingCharge();
 void deleteCharge();
 int randomInteger(int, int);
@@ -325,11 +326,39 @@ void serveCustomer() {
     }
   }
 }
-void generateReceipt() {}
+
+void printReceipt()
+{
+    printf("\nProcessing Successful.\n");
+    printf("RECEIPT\n");
+    printf("Transaction Date: %s\n", __DATE__);
+    printf("Type of Customer: Cash on Delivery (COD)\n");
+    printf("Items Purchased: \n");
+    printf("GCT Amount: \n");
+    printf("Total Amount: \n");
+    printf("Cash Given/Charge Amount: \n");
+    printf("Change: \n");
+}
+
 void codServe() {}
 void chargeServe() {}
 void addCharge() {}
-void blankCharge() {}
+
+Charge blankCharge()
+{
+    Charge ch;
+
+    ch.idNo = 0;
+    strcpy(ch.name, " ");
+    //ch.fuelType = ' ';
+    ch.fuel = 0;
+    ch.fuelAmt = 0;
+    ch.lubeRequest = ' ';
+    ch.depositAmt = 0;
+
+    return ch;
+}
+
 void existingCharge() {}
 void deleteCharge() {}
 
