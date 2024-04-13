@@ -435,8 +435,51 @@ char randomCharacter(int index) {
 
   return charset[index];
 }
-void paytoCharge() {}
-void updateCharge() { enterPassword(); }
+void paytoCharge(Charge *cust) {}
+void updateCharge(Charge *cust) {
+  bool correct = enterPassword();
+
+  if (correct) {
+    int idNo;
+    printf("Enter customer id:");
+    scanf("%d", &idNo);
+
+    bool valid;
+
+    int i = 0;
+
+    for (i = 0; i < 30; i++) {
+      if ((cust + i)->idNo == idNo) {
+        cust = cust + i;
+        printf("Enter Amount (mimumum 1000);");
+
+        valid = true;
+
+        do {
+
+          if (!valid) {
+            printf("Invalid. Remember, amount shouldn't be less than 1000");
+          }
+          scanf("%f", &cust->fuelAmt);
+
+          valid = cust->fuelAmt >= 1000;
+
+          int payType;
+          do {
+            printf("Select Payment Type\n\t 1. Cash \n\t 2. Card\n");
+            printf("Enter Choice:");
+
+            scanf("%d", &payType);
+            clear;
+          } while (payType != 1 && payType != 2);
+
+        } while (valid);
+
+        break;
+      }
+    }
+  }
+}
 void refuelTank() { enterPassword(); }
 void chargeSearch() {}
 void chargePayment() {}
