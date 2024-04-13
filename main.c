@@ -1,4 +1,5 @@
 #include <conio.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,13 +26,16 @@ typedef enum { L5W30 = 1, L5W40, L15W40, LSAE40 } LubeType;
 
 #define Correct_Password "123456"
 
+// Command line options for clearing screen: Windows/Mac
+#define clear system("cls || clear")
+
 typedef struct {
-  FuelType FuelType;
+  FuelType fuelType;
   float cost; // Cost per gallon
 } Tank;
 
 typedef struct {
-  FuelType FuelType;
+  FuelType fuelType;
   float fuelAmt;
   char lubeReq;
   enum { Cash = 1, Card = 2 } payType;
@@ -81,9 +85,11 @@ void chargePayment();
 void generateReport();
 void exitProgram();
 bool enterPassword(); // Returns true if password is valid
+char *getLicensePlateInfo();
 
 int main() {
   enterPassword();
+  serveCustomer();
   return 0;
 }
 
@@ -106,6 +112,8 @@ bool enterPassword() {
   } while (c != EOF);
   printf("\n");
 
+  clear;
+
   if (strcmp(password, Correct_Password) == 0) {
     printf("Access Granted\n");
     return true;
@@ -113,6 +121,7 @@ bool enterPassword() {
     printf("Invalid Password Entered\n");
     return false;
   }
+  clear;
 }
 
 void mainMenu() {
@@ -177,27 +186,105 @@ void serveCustomer() {
   Charge *charge;
   CoD *cod;
 
-  char fuelType[10];
+  // Example
+  CoD cust;
+  cod = &cust;
 
-  enum { CoD = 1, Charge = 2 } choice;
-  printf("Select type of Customer\n\t 1- Cash on Delivery (CoD) \n\t 2 - "
-         "Charge Customer");
-  printf("Enter choice:");
-  scanf("%d", &choice);
+  Charge cst;
+  charge = &cst;
 
-  if (choice == CoD) {
-    printf("Enter Fuel Type:");
-    scanf("%s", fuelType);
+  bool valid;
+
+  int fuelType;
+
+  enum { CoDCustomer = 1, ChargeCustomer = 2 } choice;
+
+  valid = true;
+  do {
+    if (!valid) {
+      printf("Incorrect option entered. Please choose 1 or 2\n");
+    }
+    printf("Select type of Customer\n\t 1- Cash on Delivery (CoD) \n\t 2 - "
+           "Charge Customer\n");
+    printf("Enter choice:");
+    scanf("%d", &choice);
+    valid = false;
+    clear;
+  } while (choice != 1 && choice != 2);
+
+  if (choice == CoDCustomer) {
+
+    valid = true;
+    do {
+      if (valid == false) {
+        printf(
+            "Incorrect Fuel Type entered. Please select an optuion from 1-3\n");
+      }
+      printf("Select Fuel Type\n\t1. E10-87\n\t 2. E10-90\n\t 3.Diesel\n");
+      printf("Enter option:");
+
+      scanf("%d", &fuelType);
+
+      valid = false;
+      clear;
+    } while (fuelType < 1 || fuelType > 3);
+
+    cod->fuelType = fuelType;
 
     printf("Enter Fuel Amount:");
+
     scanf("%f", &cod->fuelAmt);
+
+    clear;
 
     cod->lubeReq = randomInteger(0, 1) ? 'Y' : 'N';
 
-    printf("Select Payment Type\n\t 1. Cash \n\t 2. Card\n");
-    printf("Enter Choice:");
+    do {
+      printf("Select Payment Type\n\t 1. Cash \n\t 2. Card\n");
+      printf("Enter Choice:");
 
-  } else if (choice == Charge) {
+      scanf("%d", &cod->payType);
+      clear;
+    } while (cod->payType != 1 && cod->payType != 2);
+
+  } else if (choice == ChargeCustomer) {
+    char idname[50];
+    int id = 0;
+
+    printf("Enter ID or Business Name:");
+    scanf("%s", idname);
+
+    if (isdigit(idname[0])) { // Digit characters are id number
+      sscanf(idname, "%d", &id);
+      charge->idNo = id;
+    } else {
+      strcpy(charge->name, idname);
+    }
+    clear;
+
+    int numReps;
+    valid = true;
+    do {
+      printf("Enter number of representatives:");
+      scanf("%d", &numReps);
+      valid = false;
+    } while (numReps > 5 || numReps < 1);
+
+    charge->repNum = numReps;
+
+    strcpy(charge->licenseNo, getLicensePlateInfo());
+
+    bool prefDeposit = randomInteger(0, 1) ? true : false;
+
+    int minDepo = 0;
+    int litr;
+
+    if (prefDeposit) {
+      minDepo = 10000;
+      litr = 50;
+
+      printf("Minimum Deposit is $%d for %d liters", minDepo, litr);
+    }
   }
 }
 void generateReceipt() {}
@@ -207,6 +294,33 @@ void addCharge() {}
 void blankCharge() {}
 void existingCharge() {}
 void deleteCharge() {}
+
+char *getLicensePlateInfo() {
+  static char licNo[7];
+  bool valid = false;
+  do {
+    printf("Enter Lisense Plate Number:");
+    scanf("%s", licNo);
+
+    // Valid
+    if (strlen(licNo) != 6) {
+      clear;
+      printf("Invalid. License Plate should have 6 characters\n");
+      continue;
+    }
+
+    valid = isdigit(licNo[0]) && licNo[1] && licNo[2] && licNo[3];
+
+    valid &= isalpha(licNo[4]) && isalpha(licNo[5]);
+
+    if (!valid) {
+      clear;
+      printf(
+          "Invalid. License Plate should use the following format 5786KW \n");
+    }
+  } while (!valid);
+  return licNo;
+}
 
 int randomInteger(int upper, int lower) {
   int randomNum;
