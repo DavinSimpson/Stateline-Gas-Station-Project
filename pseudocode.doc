@@ -1,0 +1,282 @@
+// Include necessary libraries
+
+// Define constants for fuel capacity and price
+DEFINE E87CAP = 75708.23
+DEFINE E90CAP = 113562.35
+DEFINE DIESELCAP = 94635.29
+
+DEFINE E87PRICE = 184.90
+DEFINE E90PRICE = 193.60
+DEFINE DIESELPRICE = 182.30
+
+DEFINE L5W30PRICE = 2900
+DEFINE L5W40PRICE = 3500
+DEFINE L15W40PRICE = 3600
+DEFINE LSAR40PRICE = 2100
+
+// Define enums for fuel and lube types
+ENUM FuelType = { E10_87 = 1, E10_90, DIESEL }
+ENUM LubeType = { L5W30 = 1, L5W40, L15W40, LSAE40 }
+
+// Define data structures
+
+// Define correct password
+DEFINE Correct_Password = "123456"
+
+// Define function prototypes
+
+// Define main function
+FUNCTION main()
+    enterPassword()
+    serveCustomer()
+    RETURN 0
+END FUNCTION
+
+// Define function to enter password
+FUNCTION enterPassword()
+    DECLARE password[100] = ""
+
+    PRINT "Authorization Required"
+    PRINT "Enter Password:"
+
+    DECLARE i = 0
+    DECLARE c
+
+    // User enters the password
+    DO
+        c = getch() // Record each character
+        IF c == 13 OR c == 3 THEN
+            BREAK
+        END IF
+
+        IF c == 8 THEN // Allow backspace
+            IF strlen(password) == 0 THEN
+                CONTINUE
+            END IF
+            PRINT "\b \b"
+            password[strlen(password) - 1] = '\0'
+            CONTINUE
+        END IF
+
+        password = password + c
+        PRINT "*" // Print a mask instead of the character
+    WHILE c != EOF
+    PRINT ""
+
+    clear
+
+    IF strcmp(password, Correct_Password) == 0 THEN
+        PRINT "Access Granted"
+        RETURN TRUE
+    ELSE
+        PRINT "Invalid Password Entered"
+        RETURN FALSE
+    END IF
+
+    clear
+END FUNCTION
+
+// Define main menu function
+FUNCTION mainMenu()
+    // Declare variables for menu use
+    DECLARE choice
+
+    // Main menu loop
+    DO
+        // Display menu options
+        PRINT "Main Menu"
+        PRINT "1. Serve Customer"
+        PRINT "2. Add Charge Customer"
+        PRINT "3. Update Charge Customer"
+        PRINT "4. Delete Charge Customer"
+        PRINT "5. Make Payment to Charge Account"
+        PRINT "6. Refuel Tank"
+        PRINT "7. Generate Report"
+        PRINT "8. Search for existing Charge Customer"
+        PRINT "9. Exit"
+        PRINT "Enter your choice: "
+        SCAN choice
+
+        // Execute corresponding function based on user choice
+        SWITCH choice
+            CASE 1:
+                serveCustomer()
+                BREAK
+            CASE 2:
+                addCharge()
+                BREAK
+            CASE 3:
+                updateCharge()
+                BREAK
+            CASE 4:
+                deleteCharge()
+                BREAK
+            CASE 5:
+                chargePayment()
+                BREAK
+            CASE 6:
+                refuelTank()
+                BREAK
+            CASE 7:
+                generateReport()
+                BREAK
+            CASE 8:
+                chargeSearch()
+                BREAK
+            CASE 9:
+                RETURN
+                BREAK
+            DEFAULT:
+                PRINT "Invalid choice. Please try again."
+        END SWITCH
+    WHILE choice != 9
+
+    RETURN
+END FUNCTION
+
+// Define serve customer function
+FUNCTION serveCustomer()
+    // Declare variables
+    DECLARE charge
+    DECLARE cod
+    DECLARE valid
+    DECLARE fuelType
+    DECLARE choice
+
+    ENUM { CoDCustomer = 1, ChargeCustomer = 2 } choice
+
+    valid = TRUE
+    DO
+        IF valid == FALSE THEN
+            PRINT "Incorrect option entered. Please choose 1 or 2"
+        END IF
+        PRINT "Select type of Customer"
+        PRINT "1. Cash on Delivery (CoD)"
+        PRINT "2. Charge Customer"
+        PRINT "Enter choice:"
+        SCAN choice
+        valid = FALSE
+        clear
+    WHILE choice != 1 AND choice != 2
+
+    IF choice == CoDCustomer THEN
+        valid = TRUE
+        DO
+            IF valid == FALSE THEN
+                PRINT "Incorrect Fuel Type entered. Please select an option from 1-3"
+            END IF
+            PRINT "Select Fuel Type"
+            PRINT "1. E10-87"
+            PRINT "2. E10-90"
+            PRINT "3. Diesel"
+            PRINT "Enter option:"
+            SCAN fuelType
+            valid = FALSE
+            clear
+        WHILE fuelType < 1 OR fuelType > 3
+
+        cod.fuelType = fuelType
+
+        PRINT "Enter Fuel Amount:"
+        SCAN cod.fuelAmt
+
+        clear
+
+        cod.lubeReq = randomInteger(0, 1) ? 'Y' : 'N'
+
+        DO
+            PRINT "Select Payment Type"
+            PRINT "1. Cash"
+            PRINT "2. Card"
+            PRINT "Enter Choice:"
+            SCAN cod.payType
+            clear
+        WHILE cod.payType != 1 AND cod.payType != 2
+
+    ELSE IF choice == ChargeCustomer THEN
+        DECLARE idname[50]
+        DECLARE id = 0
+
+        PRINT "Enter ID or Business Name:"
+        SCAN idname
+
+        IF isdigit(idname[0]) THEN // Digit characters are id number
+            sscanf(idname, "%d", &id)
+            charge.idNo = id
+        ELSE
+            strcpy(charge.name, idname)
+        END IF
+        clear
+
+        DECLARE numReps
+        valid = TRUE
+        DO
+            PRINT "Enter number of representatives:"
+            SCAN numReps
+            valid = FALSE
+        WHILE numReps > 5 OR numReps < 1
+
+        charge.repNum = numReps
+
+        strcpy(charge.licenseNo, getLicensePlateInfo())
+
+        DECLARE prefDeposit = randomInteger(0, 1) ? TRUE : FALSE
+
+        DECLARE minDepo = 0
+        DECLARE litr
+
+        IF prefDeposit THEN
+            minDepo = 10000
+            litr = 50
+
+            PRINT "Minimum Deposit is $" + minDepo + " for " + litr + " liters"
+        END IF
+    END IF
+END FUNCTION
+
+// Define function to get license plate info
+FUNCTION getLicensePlateInfo()
+    DECLARE licNo[7]
+    DECLARE valid = FALSE
+    DO
+        PRINT "Enter License Plate Number:"
+        SCAN licNo
+
+        // Valid
+        IF strlen(licNo) != 6 THEN
+            clear
+            PRINT "Invalid. License Plate should have 6 characters"
+            CONTINUE
+        END IF
+
+        valid = isdigit(licNo[0]) AND licNo[1] AND licNo[2] AND licNo[3]
+
+        valid = valid AND isalpha(licNo[4]) AND isalpha(licNo[5])
+
+        IF NOT valid THEN
+            clear
+            PRINT "Invalid. License Plate should use the following format 5786KW"
+        END IF
+    WHILE NOT valid
+
+    RETURN licNo
+END FUNCTION
+
+// Define function to generate random integer
+FUNCTION randomInteger(upper, lower)
+    DECLARE randomNum
+
+    srand(time(0))
+    randomNum = rand() % ((upper - lower + 1) + lower)
+
+    RETURN randomNum
+END FUNCTION
+
+// Define function to generate random character
+FUNCTION randomCharacter(index)
+    DECLARE charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    RETURN charset[index]
+END FUNCTION
+
+// Define other functions (generateReceipt, codServe, chargeServe, addCharge, blankCharge, existingCharge, deleteCharge, paytoCharge, updateCharge, refuelTank, chargeSearch, chargePayment, generateReport, exitProgram)
